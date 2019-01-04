@@ -28,6 +28,14 @@
            // Sample demo.tpl.php content: <pre>$model: <?php print_r($model); ?></pre>
            $mto = new JrMvcMTO('demo.tpl.php');             // 4) instantiate
            // To output json instead use extended MTO above: $mto = new DemoMTO(JrMvcMTO::NULL_TPL);
+           // Or in PHP 7 you can use an inner class instead of defining DemoMTO above this class:
+           /*
+           $mto = new class(JrMvcMTO::NULL_TPL) extends JrMvcMTO {
+               function onNullTemplate() {
+                   echo json_encode($this->model);
+               }
+           };
+           *//*
                      
            $mto->setModelValue('Su', 'Sunday');             // 5) assignments              
            $mto->setModelValue('Mo', 'Monday');
