@@ -17,7 +17,7 @@
      require('jrmvc.lib.php');                              // 1) require library                           
 
      class DemoMTO extends JrMvcMTO {                       // 1a) optionally extend MTO for non-template output, e.g. JSON
-       function onNullView() {
+       function onNullTemplate() {
          echo json_encode($this->model);                    
          // Instead a binary such as an xls or pdf could be sent
        }
@@ -27,7 +27,7 @@
         function applyInputToModel() {                      // 3) implement only required method
            // Sample demo.tpl.php content: <pre>$model: <?php print_r($model); ?></pre>
            $mto = new JrMvcMTO('demo.tpl.php');             // 4) instantiate
-           // To output json instead use extended MTO above: $mto = new DemoMTO(JrMvcMTO::NULL_VIEW);
+           // To output json instead use extended MTO above: $mto = new DemoMTO(JrMvcMTO::NULL_TPL);
                      
            $mto->setModelValue('Su', 'Sunday');             // 5) assignments              
            $mto->setModelValue('Mo', 'Monday');
@@ -84,7 +84,7 @@
   abstract class AbstractMTO implements IModelXfer {
     protected $view;
     protected $model;
-    const NULL_VIEW = null;
+    const NULL_TPL = null;
     
     function setView($view) {
       $this->view = $view;    
@@ -110,7 +110,7 @@
       $GLOBALS['_SESSION'] = $session;      
     }
     
-    protected function onNullView() {}
+    protected function onNullTemplate() {}
   }
   
   class JrMvcMto extends AbstractMTO {    
@@ -123,8 +123,8 @@
       # all access to them to occur within controller's applyInputToModel method
       $this->unsetNonSessionGlobals();
       
-      if (is_null($this->view)) {
-        $this->onNullView();
+      if (empty($this->view)) {
+        $this->onNullTemplate();
       }
       else {
         $model = $this->model;
