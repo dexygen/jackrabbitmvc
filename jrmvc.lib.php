@@ -3,7 +3,7 @@
    * jrMvc (JackRabbitMvc -- formerly barebonesmvc-php) 
    * is a one-file MVC micro-framework for PHP5.
    * 
-   * Copyright (c) 2007, George M. Jempty
+   * Copyright (c) 2007-2019, George M. Jempty
    *
    * "A designer knows he has achieved perfection not when there is nothing left
    * to add, but when there is nothing left to take away."
@@ -13,24 +13,33 @@
    *
    * USAGE:
    *
-   require('jrmvc.lib.php');                                 // 1) require
-    
-   class DemoController extends AbstractJrMvcController {    // 2) extend
-      function applyInputToModel() {                         // 3) implement
-         $mto = new JrMvcMTO('jrmvc.tpl.php');               // 4) instantiate
-         // jrmvc.tpl.php content: <pre>$model: <?php print_r($model); ?></pre>
-   
-         $mto->setModelValue('Su', 'Sunday');                // 5) assignments
-         $mto->setModelValue('Mo', 'Monday');
-         $mto->setModelValue('Tu', 'Tuesday');
-         $mto->setModelValue('We', 'Wednesday');
-         $mto->setModelValues(['Th'=>'Thursday', 'Fr'=>'Friday', 'Sa'=>'Saturday']);
-   
-         return $mto;                                        // 6) return
+   <?php
+     require('jrmvc.lib.php');                              // 1) require library                           
+
+     class DemoMTO extends JrMvcMTO {                       // 1a) optionally extend MTO, ideal when not using template, e.g. JSON
+       function onNullView() {
+         echo json_encode($this->model);                    
+         // Instead a binary such as an xls or pdf could be sent
        }
-   }
-    
-   DemoController::sendResponse(new DemoController());       // 7) send
+     }
+
+     class DemoController extends AbstractJrMvcController { // 2) extend Controller  
+        function applyInputToModel() {                      // 3) implement only required method
+           // Sample demo.tpl.php content: <pre>$model: <?php print_r($model); ?></pre>
+           $mto = new JrMvcMTO('demo.tpl.php');             // 4) instantiate
+           // To output json instead use extended MTO above: $mto = new DemoMTO(JrMvcMTO::NULL_VIEW);
+                     
+           $mto->setModelValue('Su', 'Sunday');             // 5) assignments              
+           $mto->setModelValue('Mo', 'Monday');
+           $mto->setModelValue('Tu', 'Tuesday');
+           $mto->setModelValue('We', 'Wednesday');
+           $mto->setModelValues(['Th'=>'Thursday', 'Fr'=>'Friday', 'Sa'=>'Saturday']);
+
+           return $mto;                                     // 6) return MTO
+         }
+     }
+
+     DemoController::sendResponse(new DemoController());    // 7) send response
    *
    * OUTPUT:
    *
@@ -75,6 +84,7 @@
   abstract class AbstractMTO implements IModelXfer {
     protected $view;
     protected $model;
+    const NULL_VIEW = null;
     
     function setView($view) {
       $this->view = $view;    
@@ -99,6 +109,8 @@
       unset($GLOBALS);
       $GLOBALS['_SESSION'] = $session;      
     }
+    
+    protected function onNullView() {}
   }
   
   class JrMvcMto extends AbstractMTO {    
@@ -111,8 +123,13 @@
       # thus encouraging all access to them to occur within controller
       $this->unsetNonSessionGlobals();
       
-      $model = $this->model;
-      include($this->view);
+      if (is_null($this->view)) {
+        $this->onNullView();
+      }
+      else {
+        $model = $this->model;
+        include($this->view); 
+      }
     }    
   }
 ?>
