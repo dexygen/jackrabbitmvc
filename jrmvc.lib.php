@@ -1,7 +1,7 @@
 <?php
   /*
    * jrMvc (JackRabbitMvc -- formerly barebonesmvc-php) 
-   * is a one-file MVC micro-framework for PHP5.
+   * is a one-file MVC micro-framework for PHP 5+ (supports 7)
    * 
    * Copyright (c) 2007-2019, George M. Jempty
    *
@@ -16,7 +16,7 @@
    <?php
      require('jrmvc.lib.php');                              // 1) require library                           
 
-     class DemoMTO extends JrMvcMTO {                       // 1a) optionally extend MTO, ideal when not using template, e.g. JSON
+     class DemoMTO extends JrMvcMTO {                       // 1a) optionally extend MTO for non-template output, e.g. JSON
        function onNullView() {
          echo json_encode($this->model);                    
          // Instead a binary such as an xls or pdf could be sent
@@ -119,8 +119,8 @@
     }
     
     function applyModelToView() {
-      # Ensures view does not have access to get/post variables,
-      # thus encouraging all access to them to occur within controller
+      # Ensures view does not have access to get/post variables, thus encouraging
+      # all access to them to occur within controller's applyInputToModel method
       $this->unsetNonSessionGlobals();
       
       if (is_null($this->view)) {
@@ -132,4 +132,3 @@
       }
     }    
   }
-?>
