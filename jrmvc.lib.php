@@ -5,9 +5,9 @@
    * 
    * Copyright (c) 2007-2019, George M. Jempty
    *
-   * "A designer knows he has achieved perfection not when there is nothing left
-   * to add, but when there is nothing left to take away."
-   * (Antoine de Saint-Exupery)
+   * "Perfection is attained not when there is nothing left to add,
+   *  but when there is nothing left to take away."
+   * (Antoine de Saint-Exupéry)
    *
    * LICENSE: https://opensource.org/licenses/MIT
    *
