@@ -1,6 +1,6 @@
 ### jrMvc (JackRabbitMvc) is a ~75 line (excluding comments), one-file, PHP 5+ (supports 7) MVC micro-framework.
 
->Perfection is attained not when there is nothing left
+>"Perfection is attained not when there is nothing left
 to add, but when there is nothing left to take away."
 (Antoine de Saint-Exupéry)
 
