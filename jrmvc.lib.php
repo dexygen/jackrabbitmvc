@@ -3,7 +3,7 @@
    * jrMvc (JackRabbitMvc -- formerly barebonesmvc-php) 
    * is a one-file MVC micro-framework for PHP 5+ (supports 7)
    * 
-   * Copyright (c) 2007-2019, George M. Jempty
+   * Copyright (c) 2007-2021, George M. Jempty
    *
    * "Perfection is attained not when there is nothing left to add,
    *  but when there is nothing left to take away."
