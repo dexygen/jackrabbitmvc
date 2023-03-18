@@ -113,9 +113,13 @@
     }
     
     protected function unsetNonSessionGlobals() {
-      $session = $GLOBALS['_SESSION'];
+      if (array_key_exists('_SESSION', $GLOBALS)) {
+        $session = $GLOBALS['_SESSION'];
+      }
       unset($GLOBALS);
-      $GLOBALS['_SESSION'] = $session;      
+      if (isset($session)) {
+        $GLOBALS['_SESSION'] = $session;  
+      }    
     }
     
     protected function onNullTemplate() {}
